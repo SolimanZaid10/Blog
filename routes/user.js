@@ -1,0 +1,121 @@
+const express = require('express');
+const { create, login, getAll, getOne, editOne, deleteOne, follow, unfollow, getFollowers, getFollowings } = require('../controllers/user');
+const router = express.Router();
+const authMiddleware = require('../middlewares/authentication');
+const app = express();
+//new user
+router.post('/register', async (req, res, next) => {
+    const { body } = req;
+    try {
+        const user = await create(body);
+        res.json(user);
+    } catch (e) {
+        next(e);
+    }
+});
+
+//login 
+router.post('/login', async (req, res, next) => {
+    const { body } = req;
+    try {
+        const user = await login(body);
+        res.json(user);
+    } catch (e) {
+        next(e);
+    }
+
+});
+
+//show all users
+router.get('/', async (req, res, next) => {
+    try {
+        const users = await getAll();
+        res.json(users);
+    } catch (e) {
+        next(e);
+    }
+});
+
+//select user by id 
+router.get('/:id', async (req, res, next) => {
+    const { params: { id } } = req;
+    try {
+        const users = await getOne(id);
+        res.json(users);
+    } catch (e) {
+        next(e);
+    }
+
+});
+
+//get followers
+router.get('/followers/:id', async (req, res, next) => {
+    const { params: { id } } = req;
+    try {
+        const users = await getFollowers(id);
+        res.json(users);
+    } catch (e) {
+        next(e);
+    }
+})
+//get followings
+router.get('/followings/:id', async (req, res, next) => {
+    const { params: { id } } = req;
+    try {
+        const users = await getFollowings(id);
+        res.json(users);
+    } catch (e) {
+        next(e);
+    }
+})
+
+//edit user by id 
+router.patch('/:id', async (req, res, next) => {
+    const { params: { id }, body } = req;
+    try {
+        const users = await editOne(id, body);
+        res.json(users);
+    } catch (e) {
+        next(e);
+    }
+});
+
+//delete user by id 
+router.delete('/:id', async (req, res, next) => {
+    const { params: { id } } = req;
+    try {
+        const users = await deleteOne(id);
+        res.json(users);
+    } catch (e) {
+        next(e);
+    }
+});
+
+//follow user
+router.post('/follow/:userid', authMiddleware, async (req, res, next) => {
+    let { user: { id }, params: { userid } } = req;
+    try {
+        const user = await follow(id, userid);
+        res.json(user);
+    }
+    catch (e) {
+        next(e);
+
+    }
+})
+
+//unfollow user
+router.post('/unfollow/:userid', authMiddleware, async (req, res, next) => {
+    let { user: { id }, params: { userid } } = req;
+    try {
+        const user = await unfollow(id, userid);
+        res.json(user);
+    }
+    catch (e) {
+        next(e);
+
+    }
+})
+
+
+module.exports = router;
