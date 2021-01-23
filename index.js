@@ -5,8 +5,8 @@ const userRoutes=require('./routes/user');
 const homeRoute=require('./routes/home')
 const authMiddleware = require('./middlewares/authentication');
 
-
-mongoose.connect('mongodb://localhost:27017/blog', {useNewUrlParser: true});
+const { MONGODB_URI } = process.env;
+mongoose.connect(MONGODB_URI, {useNewUrlParser: true});
 const app = express();
 app.use(express.json())
 
