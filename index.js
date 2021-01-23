@@ -6,7 +6,8 @@ const homeRoute=require('./routes/home')
 const authMiddleware = require('./middlewares/authentication');
 
 const { MONGODB_URI } = process.env;
-mongoose.connect(MONGODB_URI, {useNewUrlParser: true});
+mongoose.connect(MONGODB_URI, {useNewUrlParser: true})
+.catch((err) => console.log(err))
 const app = express();
 app.use(express.json())
 
