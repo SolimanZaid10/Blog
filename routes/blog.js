@@ -3,6 +3,30 @@ const { getAll, create, getOne, editOne, deleteOne,getBlogs,getOneSearch,getbyTa
 const router = express.Router();
 const multer = require('multer');
 
+//search
+router.get('/searching', async (req, res, next) => {
+  let { query: { author, body, title, tag, limit, skip } } = req;
+  let _query = {}
+  if (title != undefined)
+    _query.title = { $regex: "^" + title }
+  if (tag != undefined)
+    _query.tags = tag
+  if (body != undefined)
+    _query.body = { $regex: ".*" + body + ".*" }
+  if (limit == undefined || limit == '')
+    limit = 10
+  if (skip == undefined)
+    skip = 0
+  let _pagination = { limit: Number(limit), skip: Number(skip) }
+  try {
+    const blogs = await getBlogs(_query, _pagination, author) 
+    res.json(blogs);
+  } catch (e) {
+    next(e);
+  }
+});
+
+
 
 //get all blogs
 router.get('/', async (req, res, next) => {
@@ -75,10 +99,11 @@ router.get('/searchBytitle/:title', async (req, res, next) => {
   }
 });
 //search by tag
-router.get('searchBytag/:tag', async (req, res, next) => {
-  const { params: { tag } } = req;
+
+router.get('author/:author', async (req, res, next) => {
+  const { params: { author } } = req;
   try {
-    const blog = await getbyTag(tag);
+    const blog = await getbyTag(author);
     res.json(blog);
   } catch (e) {
     next(e);
@@ -108,27 +133,5 @@ router.patch('/:id', async (req, res, next) => {
   }
 });
 
-//search
-router.get('/search', async (req, res, next) => {
-  let { query: { author, body, title, tag, limit, skip } } = req;
-  let _query = {}
-  if (title != undefined)
-    _query.title = { $regex: "^" + title }
-  if (tag != undefined)
-    _query.tags = tag
-  if (body != undefined)
-    _query.body = { $regex: ".*" + body + ".*" }
-  if (limit == undefined || limit == '')
-    limit = 10
-  if (skip == undefined)
-    skip = 0
-  let _pagination = { limit: Number(limit), skip: Number(skip) }
-  try {
-    const blogs = await getBlogs(_query, _pagination, author) 
-    res.json(blogs);
-  } catch (e) {
-    next(e);
-  }
-});
 
 module.exports = router;

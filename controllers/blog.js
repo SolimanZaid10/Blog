@@ -16,8 +16,8 @@ const getOneSearch = (title) => {
 
 }
 
-const getbyTag = (tag) => {
-  return Blog.find().where('tag').in(tags).exec();
+const getbyTag = (author) => {
+  return Blog.find({author:author}).exec();
 }
 
 const create = (blog) => {
