@@ -4,7 +4,7 @@ const router = express.Router();
 const multer = require('multer');
 
 //search
-router.get('/search/', async (req, res, next) => {
+router.get('/search/:author', async (req, res, next) => {
   let { params: { author, body, title, tag, limit, skip } } = req;
   let _query = {}
   if (title != undefined)
