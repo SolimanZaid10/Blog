@@ -16,7 +16,7 @@ const getOneSearch = (title) => {
 
 }
 
-const getbyTag = (author) => {
+const getbyAuthor = (author) => {
   return Blog.find({author:author}).exec();
 }
 
@@ -57,6 +57,6 @@ module.exports = {
   deleteOne,
   getOneSearch,
   getallHome,
-  getbyTag,
+  getbyAuthor,
   getBlogs
 }

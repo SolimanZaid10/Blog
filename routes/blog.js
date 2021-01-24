@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAll, create, getOne, editOne, deleteOne,getBlogs,getOneSearch,getbyTag} = require('../controllers/blog');
+const { getAll, create, getOne, editOne, deleteOne,getBlogs,getOneSearch,getbyAuthor} = require('../controllers/blog');
 const router = express.Router();
 const multer = require('multer');
 
@@ -90,7 +90,7 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 //search by title
-router.get('/searchBytitle/:title', async (req, res, next) => {
+router.get('/title/:title', async (req, res, next) => {
   const { params: { title } } = req;
   try {
     const blog = await getOneSearch(title);
@@ -100,11 +100,10 @@ router.get('/searchBytitle/:title', async (req, res, next) => {
   }
 });
 //search by tag
-
 router.get('/author/:author', async (req, res, next) => {
   const { params: { author } } = req;
   try {
-    const blog = await getbyTag(author);
+    const blog = await getbyAuthor(author);
     res.json(blog);
   } catch (e) {
     next(e);
