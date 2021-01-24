@@ -2,7 +2,7 @@ const Blog = require('../models/blog');
 
 
 const getAll = (query) => {
-  return Blog.find(query).exec();
+  return Blog.find(query).sort([['createdAt',-1]]).exec();
 
 }
 const getallHome = () => Blog.find({}).exec();
