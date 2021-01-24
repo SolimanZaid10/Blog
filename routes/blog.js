@@ -3,30 +3,6 @@ const { getAll, create, getOne, editOne, deleteOne,getBlogs,getOneSearch,getbyTa
 const router = express.Router();
 const multer = require('multer');
 
-//search
-router.get('/search/:author', async (req, res, next) => {
-  let { params: { author, body, title, tag, limit, skip } } = req;
-  let _query = {}
-  if (title != undefined)
-    _query.title = { $regex: "^" + title }
-  if (tag != undefined)
-    _query.tags = tag
-  if (body != undefined)
-    _query.body = { $regex: ".*" + body + ".*" }
-  if (limit == undefined || limit == '')
-    limit = 10
-  if (skip == undefined)
-    skip = 0
-  let _pagination = { limit: Number(limit), skip: Number(skip) }
-  try {
-    const blogs = await getBlogs(_query, _pagination, author) 
-    res.json(blogs);
-  } catch (e) {
-    next(e);
-  }
-});
-
-
 
 //get all blogs
 router.get('/', async (req, res, next) => {
@@ -78,6 +54,31 @@ router.post('/', upload.single('blogImage'), async (req, res, next) => {
     next(e);
   }
 });
+
+//search
+router.get('/search/:author', async (req, res, next) => {
+  let { params: { author, body, title, tag, limit, skip } } = req;
+  let _query = {}
+  if (title != undefined)
+    _query.title = { $regex: "^" + title }
+  if (tag != undefined)
+    _query.tags = tag
+  if (body != undefined)
+    _query.body = { $regex: ".*" + body + ".*" }
+  if (limit == undefined || limit == '')
+    limit = 10
+  if (skip == undefined)
+    skip = 0
+  let _pagination = { limit: Number(limit), skip: Number(skip) }
+  try {
+    const blogs = await getBlogs(_query, _pagination, author) 
+    res.json(blogs);
+  } catch (e) {
+    next(e);
+  }
+});
+
+
 // show blog
 router.get('/:id', async (req, res, next) => {
   const { params: { id } } = req;
