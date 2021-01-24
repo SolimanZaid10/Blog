@@ -34,20 +34,6 @@ const deleteOne = (id) => {
 }
 
 
-const getBlogs = async (query, pagination, author) => {
-  if (author == undefined)
-    return blogModel.find(query).sort([['updatedAt', -1]]).limit(pagination.limit).skip(pagination.skip).exec();
-  else {
-    const foundUsers = await getUsers(author)
-    let blogsIds = []
-    foundUsers.forEach(u => {
-      blogsIds.push(...u.blogs)
-    })
-    console.log(...blogsIds)
-    return blogModel.find(query).where('_id').in(blogsIds)
-      .limit(pagination.limit).skip(pagination.skip).exec();
-  }
-}
 
 module.exports = {
   getAll,
@@ -58,5 +44,5 @@ module.exports = {
   getOneSearch,
   getallHome,
   getbyAuthor,
-  getBlogs
+  
 }
