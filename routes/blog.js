@@ -1,9 +1,8 @@
 const express = require('express');
-const blogg = require('../models/blog');
-const { getAll, create, getOne, editOne, deleteOne,getBlogs} = require('../controllers/blog');
+const { getAll, create, getOne, editOne, deleteOne,getBlogs,getOneSearch,getbyTag} = require('../controllers/blog');
 const router = express.Router();
 const multer = require('multer');
-const app = express();
+
 
 //get all blogs
 router.get('/', async (req, res, next) => {
@@ -60,6 +59,26 @@ router.get('/:id', async (req, res, next) => {
   const { params: { id } } = req;
   try {
     const blog = await getOne(id);
+    res.json(blog);
+  } catch (e) {
+    next(e);
+  }
+});
+//search by title
+router.get('/:title', async (req, res, next) => {
+  const { params: { title } } = req;
+  try {
+    const blog = await getOneSearch(title);
+    res.json(blog);
+  } catch (e) {
+    next(e);
+  }
+});
+//search by tag
+router.get('/:tag', async (req, res, next) => {
+  const { params: { tag } } = req;
+  try {
+    const blog = await getbyTag(tag);
     res.json(blog);
   } catch (e) {
     next(e);
