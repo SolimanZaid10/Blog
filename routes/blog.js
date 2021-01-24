@@ -100,7 +100,7 @@ router.get('/searchBytitle/:title', async (req, res, next) => {
 });
 //search by tag
 
-router.get('author/:author', async (req, res, next) => {
+router.get('/author/:author', async (req, res, next) => {
   const { params: { author } } = req;
   try {
     const blog = await getbyTag(author);
