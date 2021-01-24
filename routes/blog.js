@@ -3,7 +3,6 @@ const blogg = require('../models/blog');
 const { getAll, create, getOne, editOne, deleteOne} = require('../controllers/blog');
 const router = express.Router();
 const multer = require('multer');
-const authMiddleware = require('../middlewares/authentication');
 const app = express();
 
 //get all blogs
@@ -33,14 +32,12 @@ router.get('/search', async (req, res, next) => {
     skip = 0
   let _pagination = { limit: Number(limit), skip: Number(skip) }
   try {
-    const blogs = await getBlogs(_query, _pagination, author) //check in controller if author undefined\
+    const blogs = await getBlogs(_query, _pagination, author) 
     res.json(blogs);
   } catch (e) {
     next(e);
   }
 });
-
-app.use(authMiddleware);
 //saving images
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
