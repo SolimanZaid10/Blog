@@ -56,8 +56,8 @@ router.post('/', upload.single('blogImage'), async (req, res, next) => {
 });
 
 //search
-router.get('/search/:author', async (req, res, next) => {
-  let { params: { author, body, title, tag, limit, skip } } = req;
+router.get('/search', async (req, res, next) => {
+  let { query: { author, body, title, tag, limit, skip } } = req;
   let _query = {}
   if (title != undefined)
     _query.title = { $regex: "^" + title }
