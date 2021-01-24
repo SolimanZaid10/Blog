@@ -4,8 +4,8 @@ const router = express.Router();
 const multer = require('multer');
 
 //search
-router.get('/searching', async (req, res, next) => {
-  let { query: { author, body, title, tag, limit, skip } } = req;
+router.get('/search/', async (req, res, next) => {
+  let { params: { author, body, title, tag, limit, skip } } = req;
   let _query = {}
   if (title != undefined)
     _query.title = { $regex: "^" + title }
