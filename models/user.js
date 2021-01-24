@@ -20,19 +20,19 @@ const userSchema = new Schema({
     firstName: {
         type: String,
         maxlength: 15,
-        //required: true,
+        required: true,
     },
     lastName: {
         type: String,
         maxlength: 15,
-        //required: true,
+        required: true,
     },
     email: {
         type: String,
         lowercase: true,
         unique: true,
-        //  required: [true, "can't be blank"], 
-        //match: [/\S+@\S+\.\S+/, 'is invalid'],
+        required: [true, "can't be blank"],
+        match: [/\S+@\S+\.\S+/, 'is invalid'],
         index: true,
 
     },
