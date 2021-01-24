@@ -1,6 +1,6 @@
 const express = require('express');
 const blogg = require('../models/blog');
-const { getAll, create, getOne, editOne, deleteOne} = require('../controllers/blog');
+const { getAll, create, getOne, editOne, deleteOne,getBlogs} = require('../controllers/blog');
 const router = express.Router();
 const multer = require('multer');
 const app = express();
@@ -15,29 +15,7 @@ router.get('/', async (req, res, next) => {
      next(e);
    } 
 });
-/* 
-//search
-router.get('/search', async (req, res, next) => {
-  let { query: { author, body, title, tag, limit, skip } } = req;
-  let _query = {}
-  if (title != undefined)
-    _query.title = { $regex: "^" + title }
-  if (tag != undefined)
-    _query.tags = tag
-  if (body != undefined)
-    _query.body = { $regex: ".*" + body + ".*" }
-  if (limit == undefined || limit == '')
-    limit = 10
-  if (skip == undefined)
-    skip = 0
-  let _pagination = { limit: Number(limit), skip: Number(skip) }
-  try {
-    const blogs = await getBlogs(_query, _pagination, author) 
-    res.json(blogs);
-  } catch (e) {
-    next(e);
-  }
-}); */
+
 //saving images
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -110,6 +88,8 @@ router.patch('/:id', async (req, res, next) => {
     next(e);
   }
 });
+
+//search
 router.get('/search', async (req, res, next) => {
   let { query: { author, body, title, tag, limit, skip } } = req;
   let _query = {}
@@ -125,7 +105,7 @@ router.get('/search', async (req, res, next) => {
     skip = 0
   let _pagination = { limit: Number(limit), skip: Number(skip) }
   try {
-    const blogs = await getBlogs(_query, _pagination, author) //check in controller if author undefined
+    const blogs = await getBlogs(_query, _pagination, author) 
     res.json(blogs);
   } catch (e) {
     next(e);
