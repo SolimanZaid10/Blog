@@ -10,8 +10,9 @@ const { MONGODB_URI } = process.env;
 mongoose.connect(MONGODB_URI, {useNewUrlParser: true})
 .catch((err) => console.log(err))
 
-app.use(cors());
+
 const app = express();
+app.use(cors());
 app.use(express.json())
 
 
