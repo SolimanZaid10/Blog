@@ -65,7 +65,7 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 //search by title
-router.get('/:title', async (req, res, next) => {
+router.get('/searchBytitle/:title', async (req, res, next) => {
   const { params: { title } } = req;
   try {
     const blog = await getOneSearch(title);
@@ -75,7 +75,7 @@ router.get('/:title', async (req, res, next) => {
   }
 });
 //search by tag
-router.get('/:tag', async (req, res, next) => {
+router.get('searchBytag/:tag', async (req, res, next) => {
   const { params: { tag } } = req;
   try {
     const blog = await getbyTag(tag);
