@@ -4,7 +4,7 @@ const blogRoutes=require('./routes/blog');
 const userRoutes=require('./routes/user');
 const homeRoute=require('./routes/home')
 const authMiddleware = require('./middlewares/authentication');
-//const cors=require('cors');
+const cors=require('cors');
 
 const { MONGODB_URI } = process.env;
 mongoose.connect(MONGODB_URI, {useNewUrlParser: true})
@@ -12,7 +12,7 @@ mongoose.connect(MONGODB_URI, {useNewUrlParser: true})
 
 
 const app = express();
-//app.use(cors());
+app.use(cors());
 app.use(express.json())
 
 
