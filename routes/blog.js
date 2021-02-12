@@ -59,6 +59,7 @@ router.post('/add', upload.single('blogImage'), async (req, res, next) => {
 // post comment
 router.post('/comment/:blogId', async (req, res, next) => {
   const { body, user: { id, username, userImage }, params: { blogId } } = req;
+  console.log(body)
   try {
     const comment = await createComment({ ...body, authorId: id, authorImg: userImage, authorName: username }, blogId)
     res.json(comment);

@@ -33,7 +33,9 @@ const blogSchema = new Schema({
         type: String
     },
     comments: [{
-        body: String,
+        body: {
+            type:String
+        },
         authorId: {
             type: Schema.Types.ObjectId,
             ref: 'User',

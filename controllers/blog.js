@@ -34,8 +34,9 @@ const deleteOne = (id) => {
 }
 
 const createComment=(comment,blogId)=>{
-  Blog.findByIdAndUpdate(blogId,{$push:{comments:comment}}).exec();
-  return comment
+  console.log(comment)
+  return  Blog.findByIdAndUpdate(blogId,{$push:{comments:comment}}).exec();
+ 
 }
 
 const getComments = async (id) =>{
