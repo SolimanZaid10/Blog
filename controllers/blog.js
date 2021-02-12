@@ -33,6 +33,16 @@ const deleteOne = (id) => {
   return Blog.findByIdAndDelete(id).exec();
 }
 
+const createComment=(comment,blogId)=>{
+  Blog.findByIdAndUpdate(blogId,{$push:{comments:comment}}).exec();
+  return comment
+}
+
+const getComments = async (id) =>{
+  const {comments}= await getOne(id)
+  return Blog.find().where('id').in(comments).exec();
+}
+
 
 
 module.exports = {
@@ -44,5 +54,7 @@ module.exports = {
   getOneSearch,
   getallHome,
   getbyAuthor,
+  createComment,
+  getComments,
   
 }

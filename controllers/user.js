@@ -57,7 +57,7 @@ const follow=(userid,followedid)=>{
 
     User.findByIdAndUpdate(followedid,{$addToSet: {followers:userid}},{new:true}).exec();
 
-    return {"status":"followed"};
+    return usser;
 }
 
 const unfollow=(userid,followedid)=>{

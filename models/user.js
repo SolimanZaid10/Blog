@@ -6,7 +6,8 @@ const userSchema = new Schema({
     username: {
         type: String,
         required: true,
-        minlength: 5,
+        minlength: 3,
+        maxlength:20,
         unique: true,
     },
 
@@ -14,17 +15,19 @@ const userSchema = new Schema({
     {
         type: String,
         required: true,
-
+        minlength:4,
     },
 
     firstName: {
         type: String,
-        maxlength: 15,
+        maxlength: 20,
+        minlength:3,
         required: true,
     },
     lastName: {
         type: String,
-        maxlength: 15,
+        maxlength: 20,
+        minlength:3,
         required: true,
     },
     email: {
@@ -35,6 +38,11 @@ const userSchema = new Schema({
         match: [/\S+@\S+\.\S+/, 'is invalid'],
         index: true,
 
+    },
+    userImage:
+    {
+        type:String,
+        
     },
     followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
     followings: [{ type: Schema.Types.ObjectId, ref: "User" }],

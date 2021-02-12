@@ -1,18 +1,19 @@
 const express = require('express');
-const { getAll, create, getOne, editOne, deleteOne,getOneSearch,getbyAuthor} = require('../controllers/blog');
+const { getAll, create, getOne, editOne, deleteOne, getOneSearch, getbyAuthor, createComment,getComments } = require('../controllers/blog');
 const router = express.Router();
 const multer = require('multer');
 
 
+
 //get all blogs
 router.get('/', async (req, res, next) => {
-   const { user: { id } } = req;
-   try {
-     const blogs = await getAll({userId:id});
-     res.json(blogs);
-   } catch (e) {
-     next(e);
-   } 
+  const { user: { id } } = req;
+  try {
+    const blogs = await getAll({ userId: id });
+    res.json(blogs);
+  } catch (e) {
+    next(e);
+  }
 });
 
 //saving images
@@ -44,17 +45,39 @@ const upload = multer({
 });
 
 //post new blog
-router.post('/', upload.single('blogImage'), async (req, res, next) => {
-  const { body, file, user: { id ,username } } = req;
-  body.blogImage = file.path;
+router.post('/add', upload.single('blogImage'), async (req, res, next) => {
+  const { body, file, user: { id, username,userImage } } = req;
+  console.log(body)
+  body.blogImage = file?.path;
   try {
-    const user = await create({ ...body, userId: id , author: username});
-    res.json(user);
+    const blog = await create({ ...body, userId: id, author: username , authorImage:userImage });
+    res.json(blog);
   } catch (e) {
     next(e);
   }
 });
+// post comment
+router.post('/comment/:blogId', async (req, res, next) => {
+  const { body, user: { id, username, userImage }, params: { blogId } } = req;
+  try {
+    const comment = await createComment({ ...body, authorId: id, authorImg: userImage, authorName: username }, blogId)
+    res.json(comment);
+  } catch (e) {
+    next(e);
 
+  }
+});
+
+// show comments
+router.get('/blogs/comments/:id', async (req, res, next) => {
+  const { params: { id } } = req;
+  try {
+    const comments = await getComments(id);
+    res.json(comments);
+  } catch (e) {
+    next(e);
+  }
+});
 
 // show blog
 router.get('/:id', async (req, res, next) => {
@@ -100,7 +123,7 @@ router.delete('/:id', async (req, res, next) => {
 });
 
 //edit blog
-router.patch('/:id', async (req, res, next) => {
+router.patch('/edit/:id', async (req, res, next) => {
   const { params: { id }, body } = req;
   try {
     const blog = await editOne(id, body);

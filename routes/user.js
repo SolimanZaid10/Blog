@@ -3,8 +3,50 @@ const { create, login, getAll, getOne, editOne, deleteOne, follow, unfollow, get
 const router = express.Router();
 const authMiddleware = require('../middlewares/authentication');
 const app = express();
+const multer = require('multer');
+
+
+
+//saving images
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './userImages/');
+  
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + file.originalname);
+    }
+  });
+  //store only images
+  const filterFile = (req, file, cb) => {
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg ') {
+      cb(null, true);
+    } else {
+      cb(null, false);
+    }
+  
+  }
+  
+  const upload = multer({
+    storage: storage,
+    limits: {
+      fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: filterFile
+  });
+
+  router.post('/register', upload.single('userImage'), async (req, res, next) => {
+    const { body, file} = req;
+    body.userImage = file?.path;
+    try {
+      const user = await create({ ...body});
+      res.json(user);
+    } catch (e) {
+      next(e);
+    }
+  });
 //new user
-router.post('/register', async (req, res, next) => {
+/* router.post('/register',upload.single('userImage') ,async (req, res, next) => {
     const { body } = req;
     try {
         const user = await create(body);
@@ -12,7 +54,7 @@ router.post('/register', async (req, res, next) => {
     } catch (e) {
         next(e);
     }
-});
+}); */
 
 //login 
 router.post('/login', async (req, res, next) => {

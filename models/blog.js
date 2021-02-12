@@ -5,30 +5,43 @@ const blogSchema = new Schema({
     title: {
         type: String,
         required: true,
-        maxlength: 30,
+        maxlength: 550,
     },
     body: {
         type: String,
-        maxlength: 60,
+        maxlength: 1000,
         required: true,
     },
     blogImage:
     {
-        type:String,
-        required:true,
+        type: String,
+        
     },
     tags: [String],
     createdAt: {
-      type: Date,
-      default: Date.now(),
+        type: Date,
+        default: Date.now(),
     },
-    userId:{
-        type:Schema.Types.ObjectId,
-        ref:'User',
+    authorImage: {
+        type: String
     },
-    author:{
-        type:String
-    }
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    author: {
+        type: String
+    },
+    comments: [{
+        body: String,
+        authorId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        },
+        authorImg:String,
+        authorName:String,
+
+    }],
 
 });
 

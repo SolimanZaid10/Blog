@@ -6,17 +6,20 @@ const homeRoute=require('./routes/home')
 const authMiddleware = require('./middlewares/authentication');
 const cors=require('cors');
 
-const { MONGODB_URI } = process.env;
+/* const { MONGODB_URI } = process.env;
 mongoose.connect(MONGODB_URI, {useNewUrlParser: true})
 .catch((err) => console.log(err))
-
+ */
+mongoose.connect('mongodb://localhost:27017/blog', {useNewUrlParser: true});
 
 const app = express();
 app.use(cors());
 app.use(express.json())
+app.use('/uploadedImages',express.static('uploadedImages'))
+app.use('/userImages',express.static('userImages'))
 
 
-app.use('/blogs',authMiddleware ,blogRoutes);
+app.use('/blogs',authMiddleware,blogRoutes);
 app.use('/users',userRoutes);
 app.use('/',homeRoute);
 
@@ -32,7 +35,7 @@ app.use((err, req, res, next) => {
         return res.status(422).json(err.errors);
       }
       if (err.code === 11000) {
-        res.status(422).json({ statusCode: 'ValidationError', property: err.keyValue });
+        res.status(422).json({ err });
       }
       if (err.message === 'UN_AUTHENTICATED') {
         res.status(401).json({ statusCode: 'UN_AUTHENTICATED' });
