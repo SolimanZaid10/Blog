@@ -51,7 +51,7 @@ const deleteOne=(id)=>{
 
 const follow=(userid,followedid)=>{
 
-    const usser=User.findById(userid)
+    const usser=User.findById(userid).exec()
 
     User.findByIdAndUpdate(userid,{$addToSet: {followings:followedid}},{new:true}).exec();
 
@@ -61,12 +61,13 @@ const follow=(userid,followedid)=>{
 }
 
 const unfollow=(userid,followedid)=>{
+    const usser=User.findById(userid).exec()
     
     User.findByIdAndUpdate(userid,{$pull: {followings:followedid}},{new:true}).exec();
 
     User.findByIdAndUpdate(followedid,{$pull: {followers:userid}},{new:true}).exec();
 
-    return {"status":"unfollowed"};
+    return usser
 }
 
 

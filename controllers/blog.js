@@ -5,6 +5,10 @@ const getAll = (query) => {
   return Blog.find(query).sort([['createdAt',-1]]).exec();
 
 }
+
+const getUserBlogs=(id)=>{
+return Blog.find({userId:id}).exec();
+} 
 const getallHome = () => Blog.find({}).exec();
 
 const getOne = (id) => {
@@ -57,5 +61,6 @@ module.exports = {
   getbyAuthor,
   createComment,
   getComments,
+  getUserBlogs
   
 }

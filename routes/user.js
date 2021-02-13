@@ -112,7 +112,7 @@ router.get('/followings/:id', async (req, res, next) => {
 })
 
 //edit user by id 
-router.patch('/:id', async (req, res, next) => {
+router.patch('/edit/:id', async (req, res, next) => {
     const { params: { id }, body } = req;
     try {
         const users = await editOne(id, body);

@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAll, create, getOne, editOne, deleteOne, getOneSearch, getbyAuthor, createComment,getComments } = require('../controllers/blog');
+const { getAll, create, getOne, editOne, deleteOne, getOneSearch, getbyAuthor, createComment,getComments,getUserBlogs } = require('../controllers/blog');
 const router = express.Router();
 const multer = require('multer');
 
@@ -15,6 +15,7 @@ router.get('/', async (req, res, next) => {
     next(e);
   }
 });
+
 
 //saving images
 const storage = multer.diskStorage({
@@ -47,7 +48,6 @@ const upload = multer({
 //post new blog
 router.post('/add', upload.single('blogImage'), async (req, res, next) => {
   const { body, file, user: { id, username,userImage } } = req;
-  console.log(body)
   body.blogImage = file?.path;
   try {
     const blog = await create({ ...body, userId: id, author: username , authorImage:userImage });
@@ -129,6 +129,17 @@ router.patch('/edit/:id', async (req, res, next) => {
   try {
     const blog = await editOne(id, body);
     res.json(blog);
+  } catch (e) {
+    next(e);
+  }
+});
+
+//userdata
+router.get('/userBlogs/:id', async (req, res, next) => {
+  const { params:  {id}  } = req;
+  try {
+    const blogs = await getUserBlogs(id);
+    res.json(blogs);
   } catch (e) {
     next(e);
   }
